@@ -3,7 +3,9 @@ from nltk.corpus import stopwords
 import string
 import lxml 
 from nltk.tokenize import sent_tokenize
-import nltk 
+import nltk
+#from math import exp, expm1
+import math 
 #from nltk.book import * 
 
 #class has abstract and main body 
@@ -28,8 +30,20 @@ class Document:
         print(self.FILE)
         print(self.PMCID)
         print(self.PMID) 
-     
     def text_sentences(self):
+	    path = "craft-1.0/genia-xml/pos/"+self.PMID+".txt.xml"
+	    path = path.replace('\n','')
+	    soup = BeautifulSoup(open(path), 'lxml') 
+	    xml_sentences = []
+	    for sent in soup.find_all("sentence"):
+		    #print sent 
+		   # encode = sent.text
+		  
+		    xml_sentences.append(sent.text)
+	    	
+	    return xml_sentences
+    
+    def text_sentences_tag(self):
         path = "craft-1.0/genia-xml/pos/"+self.PMID+".txt.xml" 
         path = path.replace('\n','')
         #print path
@@ -57,7 +71,6 @@ class Document:
 
 	return sentences 
         
-    
     def abstract(self):
         soup = BeautifulSoup(open(self.FILE), 'lxml')
 	abstract = soup.find("abstract") 
@@ -151,10 +164,19 @@ def text_sentences(text):
 	#print(len(sent_tokenize_list))
 	return sent_tokenize_list 
 
+def sentence_tokens_driver(sentences): 
+	tokenized_sentences = [] 
+	for sentence in sentences: 
+		#sentence = sentence.encode('utf8')
+		tokenized_sentences.append(sentence_tokens(sentence))
+	return tokenized_sentences 
+
 #tokenize word excluding stopwords 
 def sentence_tokens(sentence):
 	#sentence.encode('utf8')
 	stopset = set(stopwords.words('english'))
+	#if(val = 0):
+	#	sentence = sentence.encode('utf8') 
 	tokens = nltk.wordpunct_tokenize(sentence) 
 	tokens = [w for w in tokens if not w in stopset]
 	#type(tokens) 
@@ -175,7 +197,81 @@ def sentence_tokens(sentence):
 	#return cleanup
 	return tokens 
 
+###########################FUNCTIONS FOR TF-IDF##############################
 
+#counts occurence of tokens in file 
+def word_dic(tokened_sentence_list):
+	dic = {} 
+	for sentence in tokened_sentence_list:
+		for token in sentence:
+			tok  = token.lower() 
+			if tok in dic:
+				dic[tok] = dic[tok] + 1 
+			else:
+				dic[tok] = 1 
+	return dic 
+
+#TO:DO 
+#counts occurence and appearence in sentence 
+
+def tf_word_dic(dic):
+	number_of_words = len(dic)
+	tf_dic = {} 
+	for key in dic:
+		tf = float(dic[key])/ float(number_of_words) 
+		tf_dic[key] = tf 
+	return tf_dic 
+
+def corpus_occurence_dic_helper(tokenized_corp,index,dic,number_docs): 
+	#empty list of size number_docs
+	l = [0]*number_docs 
+	for sentence in tokenized_corp:
+		for token in sentence:
+			tok = token.lower()
+			tok = tok.encode('utf-8') 
+			if tok in dic:
+				dic[tok][index] = dic[tok][index] + 1 
+			else:
+				dic[tok] = l 
+				dic[tok][index] = 1 
+
+def corpus_occurence_dic(corpus):
+	dic = {} 
+	count = 0 
+	number_docs = len(corpus) 
+	for corp in corpus:
+		tokenized_corp = sentence_tokens_driver(corp) 
+		#print(tokenized_corp) 
+		corpus_occurence_dic_helper(tokenized_corp,count,dic,number_docs) 
+		count = count + 1  
+	return dic 
+
+
+
+def corpus_idf(corpus_dic,number_docs): 
+	dic = {} 
+	for key in corpus_dic:
+		#number of docs where word appears 
+		doc_occurence = 0 
+		for val in corpus_dic[key]:
+			if val!= 0:
+				doc_occurence = doc_occurence + 1 
+		
+		
+	#	print("key \t", key )
+		divide =  float(number_docs) / float(doc_occurence) 
+		dic[key] = math.log(divide) 
+		#dic[key] = math.log(float(number_docs / doc_occurence)) 
+	#	print(dic[key]) 
+
+	return dic 
+
+
+	
+
+#structure: 
+#		word : [ doc_1_appearence , doc_2_appearence, ..... , doc_n_appearence] 
+#def corpus_word_dic
 
 #takes in document in string format and tokenizes it and outputs 
 #def input_tokenize(text):

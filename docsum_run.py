@@ -1,6 +1,7 @@
 import docsum as ds 
 import nltk
 import string 
+import math 
 #from sklearn.feature_extraction.text import TfidfVectorizer
 
 #from nltk.book import * 
@@ -11,7 +12,7 @@ def main():
 	#print(list_of_docs)
 	#array of corpus sentences part of speech tagged 
 	print "Generating Corpus ... " + "\n" 
-	#corpus = ds.corpus_sentences(list_of_docs) 
+	corpus = ds.corpus_sentences(list_of_docs) 
 	#print(corpus[0]), '\n'
 	#print(corpus[1]) 
 	
@@ -30,8 +31,8 @@ def main():
 	print("\n\n\n\n\n") 
 	test_doc = list_of_texts[0] 
 	
-	print(test_doc) 
-	print(type(test_doc)) 
+	#print(test_doc) 
+	#print(type(test_doc)) 
 	
 	print("\n\n\n\n\n\n\n\n\n\n") 
 	#split texts into sentences 
@@ -42,23 +43,87 @@ def main():
 
 	#tokenize each word in each sentence  
 	
-	tokens = [] 
+	tokenized_sentences = [] 
 	for sentence in sentences:
 		sentence = sentence.encode('utf8')
 		#print(type(sentence))
-		tokens.append(ds.sentence_tokens(sentence)) 
+		tokenized_sentences.append(ds.sentence_tokens(sentence)) 
 	print("\n\n\n\n\n\nTokenized Sentences: \n\n\n\n") 
-	print(tokens) 
+	#print(tokenized_sentences) 
+
+	print("Displaying dictionary of tokenized sentences with occurences .....") 
+	tokenized_sentences_dic = ds.word_dic(tokenized_sentences) 
+	#print(tokenized_sentences_dic) 
+
+	tokenized_sentences_dic_tf = ds.tf_word_dic(tokenized_sentences_dic) 
+	#print(tokenized_sentences_dic_tf) 
+	print(tokenized_sentences_dic_tf.keys()) 	
+	
+	print("Displaying corpus dics.................") 
+	#create a list of dictionaries
+
+	#print(corpus[0])
+	#print("chicken") 	
+	
+	
+	dictionary = ds.corpus_occurence_dic(corpus)
+#	print(dictionary.keys())
+	#print '\n\n\n'
+	corpus_idf = ds.corpus_idf(dictionary,number_docs) 
+	#print(corpus_idf.keys()) 
+	#print("corpus_idf....") 
+	#print(corpus_idf) 
+
+
 
 	
-	print "Generating Corpus File ..." 
+
+
+
+	"""print("..........................Test IDF Section.....................") 
+
+	#docs where corpus appears
+
+	print(dictionary['lean']) 
+	count = 0 
+	for i in dictionary['lean']:
+		#count = 0
+		if i > 0:
+			count+=1
+
+	print(count) 
+	
+	divide = float(number_docs) / float(count) 
+	print(divide) 
+	idf = math.log(divide) 
+	print(idf) 
+	""" 
+#	print(dictionary) 	
+
 	#ds.corpus_sentences_file(corpus) 
 	
 	#print "Corpus File DONE \nOpen File: full_tagged_corpus.txt \n"
 
-	print("#############################TF-IDF Weighting of corpus#############################") 
+	print("#############################TF-IDF Weighting of test document #############################") 
 	
-	"""
+
+	print(tokenized_sentences) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
 	#transformer = TfidfTransformer()
 	
 	#list of document texts, without POS_tagging 

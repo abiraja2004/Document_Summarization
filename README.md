@@ -9,6 +9,7 @@ To run this program you need to download [*craft*](http://bionlp-corpora.sourcef
 #####PythonROUGE 
 Author: Miguel B. Almeida
 Email: mba@priberam.pt
+
 Downloaded from github repository <https://github.com/miguelbalmeida/PythonROUGE>
 
 
@@ -25,13 +26,16 @@ Uses **_docsum.py** for functions
 #####Test Files 
 PythonROUGE/Abstracts 
 - Includes manually pasted abstracts related to test files from **docsum_main.py** 
+
 PythonROUGE/Summaries
 - Test files generated from **docsum_main.py**
 
 #####Evaluation 
 Jupyter Notebook to show evaluations **Evaluations_Averages.ipynb**
 
-#####Report.pdf 
+Notebook is within PythonROUGE directory 
+
+#####report.pdf 
 Research and description of my finds while completing this project 
 
 ###THANK YOU! 

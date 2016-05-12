@@ -14,7 +14,9 @@ Downloaded from github repository <https://github.com/miguelbalmeida/PythonROUGE
 
 
 ####ROUGE 
-To be able to use ROUGE (Recall Oriented Understudy of Gisting Evaluation) you need to download it < http://www.berouge.com/Pages/default.aspx > 
+To be able to use ROUGE (Recall Oriented Understudy of Gisting Evaluation) you need to download it 
+< http://www.berouge.com/Pages/default.aspx > 
+ 
   ROUGE is PERL based so you need to have PERL installed on your machine and downloading modules as described
   in README. 
 
